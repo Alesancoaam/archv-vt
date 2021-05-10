@@ -1,0 +1,328 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Archiver API",
+        "description": "Archiver API",
+        "version": "1.0.0"
+    },
+    "tags": [
+        {
+            "name": "arquivos base64",
+            "description": "Gerenciar as operações dos arquivos em base64"
+        },
+        {
+            "name": "arquivos",
+            "description": "Gerenciar as operações dos arquivos"
+        }
+    ],
+    "paths": {
+        "/archiver/v1/arquivo64": {
+            "post": {
+                "tags": [
+                    "arquivos base64"
+                ],
+                "summary": "Adiciona um novo arquivo",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "idAplicacao": {
+                                        "type": "integer",
+                                        "description": "Id da aplicação"
+                                    },
+                                    "idModulo": {
+                                        "type": "integer",
+                                        "description": "Id do modulo"
+                                    },
+                                    "idTela": {
+                                        "type": "integer",
+                                        "description": "Id da tela"
+                                    },
+                                    "idRegistro": {
+                                        "type": "integer",
+                                        "description": "Id do registro"
+                                    },
+                                    "arquivo": {
+                                        "type": "object",
+                                        "description": "Arquivo",
+                                        "properties": {
+                                            "nome": {
+                                                "type": "string",
+                                                "description": "Nome do arquivo",
+                                                "minLength": 3,
+                                                "maxLength": 20
+                                            },
+                                            "tamanho": {
+                                                "type": "integer",
+                                                "description": "Tamanho do arquivo"
+                                            },
+                                            "data": {
+                                                "type": "string",
+                                                "description": "Arquivo em base64"
+                                            }
+                                        },
+                                        "required": [
+                                            "nome",
+                                            "tamanho",
+                                            "data"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "idModulo",
+                                    "idRegistro",
+                                    "arquivo"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "description": "Sucesso"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Generic400error"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Generic500error"
+                    }
+                }
+            }
+        },
+        "/archiver/v1/arquivo64/{arquivo}": {
+            "get": {
+                "tags": [
+                    "arquivos base64"
+                ],
+                "summary": "Busca um arquivo pelo nome, aplicação, modulo, tela e registro",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Arquivo"
+                    },
+                    {
+                        "$ref": "#/components/parameters/IdAplicacao"
+                    },
+                    {
+                        "$ref": "#/components/parameters/IdModulo"
+                    },
+                    {
+                        "$ref": "#/components/parameters/IdTela"
+                    },
+                    {
+                        "$ref": "#/components/parameters/IdRegistro"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "description": "Nome do arquivo com extensão"
+                                        },
+                                        "extension": {
+                                            "type": "string",
+                                            "description": "Extensão do arquivo"
+                                        },
+                                        "size": {
+                                            "type": "integer",
+                                            "description": "Tamanho do arquivo"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "description": "Arquivo codificado em base64"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Generic400error"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Generic500error"
+                    }
+                }
+            }
+        },
+        "/archiver/v1/arquivo/{arquivo}": {
+            "get": {
+                "tags": [
+                    "arquivos"
+                ],
+                "summary": "Busca um arquivo pelo nome, aplicação, modulo, tela e registro",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Arquivo"
+                    },
+                    {
+                        "$ref": "#/components/parameters/IdAplicacao"
+                    },
+                    {
+                        "$ref": "#/components/parameters/IdModulo"
+                    },
+                    {
+                        "$ref": "#/components/parameters/IdTela"
+                    },
+                    {
+                        "$ref": "#/components/parameters/IdRegistro"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "image/*": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Generic400error"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Generic500error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "arquivos"
+                ],
+                "summary": "Excluir um arquivo pelo nome, aplicação, modulo, tela e registro",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Arquivo"
+                    },
+                    {
+                        "$ref": "#/components/parameters/IdAplicacao"
+                    },
+                    {
+                        "$ref": "#/components/parameters/IdModulo"
+                    },
+                    {
+                        "$ref": "#/components/parameters/IdTela"
+                    },
+                    {
+                        "$ref": "#/components/parameters/IdRegistro"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Sucesso"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Generic400error"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Generic500error"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {},
+        "responses": {
+            "Generic400error": {
+                "description": "Ocorreu um erro",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "boolean",
+                                    "description": "Error"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "description": "Descrição do error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "Generic500error": {
+                "description": "Ocorreu um erro interno",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "boolean",
+                                    "description": "Error"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "description": "Descrição do error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "Arquivo": {
+                "in": "path",
+                "name": "arquivo",
+                "schema": {
+                    "type": "string"
+                },
+                "description": "Nome do arquivo",
+                "required": true
+            },
+            "IdAplicacao": {
+                "in": "query",
+                "name": "idAplicacao",
+                "schema": {
+                    "type": "integer"
+                },
+                "description": "Id da aplicação",
+                "required": false
+            },
+            "IdModulo": {
+                "in": "query",
+                "name": "idModulo",
+                "schema": {
+                    "type": "integer"
+                },
+                "description": "Id do modulo",
+                "required": true
+            },
+            "IdTela": {
+                "in": "query",
+                "name": "idTela",
+                "schema": {
+                    "type": "integer"
+                },
+                "description": "Id da tela",
+                "required": false
+            },
+            "IdRegistro": {
+                "in": "query",
+                "name": "idRegistro",
+                "schema": {
+                    "type": "integer"
+                },
+                "description": "Id do registro",
+                "required": true
+            }
+        },
+        "schemas": {}
+    }
+}
